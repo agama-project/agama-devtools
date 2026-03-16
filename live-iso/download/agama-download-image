@@ -321,9 +321,9 @@ function list_branches() {
 function verify_signature_with_keyring() {
 	local KEYRING="$1"
 	if gpg --no-default-keyring --keyring "$KEYRING" --verify "$GPG_FILE" "$CHECKSUM_FILE"; then
-		green "GPG signature OK"
+		green "$CHECKSUM_FILE: GPG signature OK"
 	else
-		red "GPG signature verification failed, the file might be corrupted."
+		red "$CHECKSUM_FILE: GPG signature verification failed, the file might be corrupted."
 		exit 1
 	fi
 }
@@ -400,9 +400,9 @@ function verify_checksum_and_signature() {
 
 	echo "Verifying SHA256 checksum..."
 	if sha256sum --status -c "$CHECKSUM_FILE"; then
-		green "SHA256 checksum OK"
+		green "${URL##*/}: SHA256 checksum OK"
 	else
-		red "SHA256 checksum does not match, broken file?"
+		red "${URL##*/}: SHA256 checksum does not match, broken file?"
 		exit 1
 	fi
 }
