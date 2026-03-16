@@ -2,16 +2,16 @@
 
 set -eu
 
-if [ "$1" == "-h" ] || [ "$1" == "--help" ]; then
+# Default directory
+OUT_DIR="${1:-./agama-images}"
+
+if [ "$OUT_DIR" == "-h" ] || [ "$OUT_DIR" == "--help" ]; then
   echo "Usage: $0 [target-directory]"
   echo
   echo "Creates a directory structure for downloading Agama images with helper scripts."
   echo "If [target-directory] is not specified, './agama-images' is used."
   exit 0
 fi
-
-# Default directory
-OUT_DIR="${1:-./agama-images}"
 
 if command -v agama-download-image >/dev/null; then
   DOWNLOAD_SCRIPT="agama-download-image"
