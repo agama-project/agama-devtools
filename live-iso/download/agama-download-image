@@ -258,7 +258,7 @@ function print_image() {
   local BASE_URL="$1"
   local PATTERN="$2"
 
-  local DATA;
+  local DATA
   DATA=$(curl -L -s "${BASE_URL}/?jsontable" |
     jq -r ".data[] | select(.name|test(\"${PATTERN}\")) | \"\(.name) \(.size) \(.mtime)\"" |
     sort -V | tail -n 1)
