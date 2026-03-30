@@ -63,6 +63,7 @@ create_scripts "systemsmanagement:Agama:Devel" "devel-tw" "devel-leap" "download
 # check if download.suse.de is accessible
 if curl --head --silent --fail --connect-timeout 5 --max-time 5 -L "https://download.suse.de" >/dev/null; then
   create_scripts "sles-16.0-GM" "sles-16.0-online" "sles-16.0-offline" "" ""
+  create_scripts "sles-16.0-QU-next" "sles-16.0-QU-next-online" "sles-16.0-QU-next-offline" "" ""
   create_scripts "sles-16.1-SLFO" "devel-sles-test-online" "devel-sles-test-offline" "" ""
   create_scripts "sles-16.1-Beta" "sles-16.1-beta-online" "sles-16.1-beta-offline" "" ""
   create_scripts "Devel:YaST:Agama:Head" "devel-sles" "" "" ""
