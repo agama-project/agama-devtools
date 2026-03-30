@@ -157,14 +157,14 @@ function print_testing_images() {
   printf "  ID: "
   green "leap-16.1-beta-offline"
   echo "  Description: Testing openSUSE Leap 16.1 Beta offline image"
-  print_image "https://download.opensuse.org/repositories/openSUSE:/Leap:/16.1:/ToTest/product/iso/" \
-    "Leap-16\\\\.1-offline-installer-${ARCH}-.*\\\\.install\\\\.iso\$"
+  print_image "https://download.opensuse.org/distribution/leap/16.1/offline/" \
+    "Leap-16\\\\.1-offline-installer-${ARCH}-Build.*\\\\.install\\\\.iso\$"
   echo
   printf "  ID: "
   green "leap-16.1-beta-online"
   echo "  Description: Testing openSUSE Leap 16.1 Beta online image"
-  print_image "https://download.opensuse.org/repositories/openSUSE:/Leap:/16.1:/ToTest/product/iso/" \
-    "Leap-16\\\\.1-online-installer-${ARCH}-.*\\\\.install\\\\.iso\$"
+  print_image "https://download.opensuse.org/distribution/leap/16.1/installer/iso/" \
+    "agama-installer\\\\.${ARCH}-.*-Leap_16\\\\.1-Build.*\\\\.iso\$"
   echo
 
   echo "  SLES 16.1"
@@ -471,13 +471,13 @@ sles-16.0-QU*-offline | sles-16.0-QU*-online)
   URL="${BASE_URL}$(latest_version "$BASE_URL" "$PATTERN")"
   ;;
 "leap-16.1-beta-offline")
-  BASE_URL="https://download.opensuse.org/repositories/openSUSE:/Leap:/16.1:/ToTest/product/iso/"
-  PATTERN="Leap-16\\\\.1-offline-installer-${ARCH}-.*\\\\.install\\\\.iso\$"
+  BASE_URL="https://download.opensuse.org/distribution/leap/16.1/offline/"
+  PATTERN="Leap-16\\\\.1-offline-installer-${ARCH}-Build.*\\\\.install\\\\.iso\$"
   URL="${BASE_URL}$(latest_version "$BASE_URL" "$PATTERN")"
   ;;
 "leap-16.1-beta-online")
-  BASE_URL="https://download.opensuse.org/repositories/openSUSE:/Leap:/16.1:/ToTest/product/iso/"
-  PATTERN="Leap-16\\\\.1-online-installer-${ARCH}-.*\\\\.install\\\\.iso\$"
+  BASE_URL="https://download.opensuse.org/distribution/leap/16.1/installer/iso/"
+  PATTERN="agama-installer\\\\.${ARCH}-Leap16\\\\.1-Build.*\\\\.iso\$"
   URL="${BASE_URL}$(latest_version "$BASE_URL" "$PATTERN")"
   ;;
 "sles-16.1-beta-offline")
