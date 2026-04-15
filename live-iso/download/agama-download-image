@@ -151,21 +151,27 @@ function print_testing_images() {
   echo "Testing images:"
   echo "==============="
   echo
-  echo "  SLES 16.0 - Next QU"
-  echo "  -------------------"
-  echo
-  printf "  ID: "
-  green "sles-16.0-QU-next-offline"
-  echo "  Description: Testing image for the next SLES 16.0 quarterly update (Offline)"
-  print_image "https://download.suse.de/ibs/SUSE:/SLFO:/Products:/SLES:/16.0:/TEST/product/iso/" \
-    "SLES-16\\\\.0-Full-${ARCH}-.*\\\\.install\\\\.iso\$"
-  echo
-  printf "  ID: "
-  green "sles-16.0-QU-next-online"
-  echo "  Description: Testing image for the next SLES 16.0 quarterly update (Online)"
-  print_image "https://download.suse.de/ibs/SUSE:/SLFO:/Products:/SLES:/16.0:/TEST/product/iso/" \
-    "SLES-16\\\\.0-Online-${ARCH}-.*\\\\.install\\\\.iso\$"
-  echo
+
+  if [[ "$IBS" == "true" ]]; then
+    echo "  SLES 16.0 - Next QU"
+    echo "  -------------------"
+    echo
+    printf "  ID: "
+    green "sles-16.0-QU-next-offline"
+    echo "  Description: Testing image for the next SLES 16.0 quarterly update (Offline)"
+    print_image "https://download.suse.de/ibs/SUSE:/SLFO:/Products:/SLES:/16.0:/TEST/product/iso/" \
+      "SLES-16\\\\.0-Full-${ARCH}-.*\\\\.install\\\\.iso\$"
+    echo
+    printf "  ID: "
+    green "sles-16.0-QU-next-online"
+    echo "  Description: Testing image for the next SLES 16.0 quarterly update (Online)"
+    print_image "https://download.suse.de/ibs/SUSE:/SLFO:/Products:/SLES:/16.0:/TEST/product/iso/" \
+      "SLES-16\\\\.0-Online-${ARCH}-.*\\\\.install\\\\.iso\$"
+    echo
+  else
+    yellow "  Skipping SLES images, https://download.suse.de is not accessible."
+  fi
+
   echo "  openSUSE Leap 16.1"
   echo "  ------------------"
   echo
@@ -367,7 +373,10 @@ function verify_checksum_and_signature() {
       GPG_FILE="${CHECKSUM_FILE}.asc"
       HASH_ALGO="sha512"
       echo "Downloading checksum ${CHECKSUM_FILE}..."
-      curl --fail -s -L -O "$CHECKSUM_URL" || { red "Failed to download checksum"; exit 1; }
+      curl --fail -s -L -O "$CHECKSUM_URL" || {
+        red "Failed to download checksum"
+        exit 1
+      }
     else
       red "Failed to download checksum file from $CHECKSUM_URL."
       exit 1
@@ -456,6 +465,11 @@ while [[ $# -gt 0 ]]; do
     ;;
   esac
 done
+
+if ! command -v jq >/dev/null; then
+  echo "Error: The required 'jq' tool is not installed."
+  exit 1
+fi
 
 if [ -z "$IMAGE" ]; then
   print_list

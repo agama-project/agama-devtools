@@ -2,18 +2,18 @@
 
 This directory contains scripts for downloading Agama ISO images.
 
-You can run the scripts directly or you can installe them using the `Makefile`.
-Run `make install` as regular user to install them in into `~/bin` directory. If
-started as `root` user (directly or via `sudo`) the scripts are installed into
-the  `/usr/local/bin` directory.
+You can run the scripts directly or you can install them using the `Makefile`
+file. Run `make install` as regular user to install them in into our `$HOME`
+directory (to `~/bin`). If started as `root` user (directly or via `sudo`) the
+scripts are installed into the `/usr/bin` directory.
 
 ## `agama-download-image`
 
 This script downloads specific Agama ISO images. It automatically handles:
 
-- Listing the available images
+- Listing the available images with details (location, age, size)
 - Finding the latest version for development and testing images
-- Verifying SHA256 checksums
+- Verifying SHA256 or SHA512 checksums
 - Verifying GPG signatures
 
 **Usage:**
@@ -24,8 +24,8 @@ agama-download-image [options] [image-id]
 
 **Options:**
 
-- `--arch <arch>`: Specify the architecture (default: system architecture).
-  Supported: `x86_64`, `aarch64`, `s390x`, `ppc64le`.
+- `--arch <arch>`: Specify the architecture (default: current system
+  architecture). Supported: `x86_64`, `aarch64`, `s390x`, `ppc64le`.
 
 - `[image-id]`: Name of the image to download. Run the script without
   arguments to see the list of available image IDs.
