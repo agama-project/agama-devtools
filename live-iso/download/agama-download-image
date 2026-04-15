@@ -151,11 +151,11 @@ function print_testing_images() {
   echo "Testing images:"
   echo "==============="
   echo
+  echo "  SLES 16.0 - Next QU"
+  echo "  -------------------"
+  echo
 
   if [[ "$IBS" == "true" ]]; then
-    echo "  SLES 16.0 - Next QU"
-    echo "  -------------------"
-    echo
     printf "  ID: "
     green "sles-16.0-QU-next-offline"
     echo "  Description: Testing image for the next SLES 16.0 quarterly update (Offline)"
@@ -167,11 +167,11 @@ function print_testing_images() {
     echo "  Description: Testing image for the next SLES 16.0 quarterly update (Online)"
     print_image "https://download.suse.de/ibs/SUSE:/SLFO:/Products:/SLES:/16.0:/TEST/product/iso/" \
       "SLES-16\\\\.0-Online-${ARCH}-.*\\\\.install\\\\.iso\$"
-    echo
   else
     yellow "  Skipping SLES images, https://download.suse.de is not accessible."
   fi
 
+  echo
   echo "  openSUSE Leap 16.1"
   echo "  ------------------"
   echo
