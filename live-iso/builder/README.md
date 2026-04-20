@@ -65,7 +65,7 @@ are not required.
 ## Installation
 
 The included `Makefile` provides support for easy installation. It is recommended to run it as
-`root` user to install it into the `/usr/local/bin` directory so it can be accessed when running via
+`root` user to install it into the `/usr/bin` directory so it can be accessed when running via
 `sudo`.
 
 ```sh

@@ -1,5 +1,5 @@
 ifeq ($(shell id -u),0)
-	PREFIX ?= /usr/local
+	PREFIX ?= /usr
 else
 	PREFIX ?= $(HOME)
 endif
