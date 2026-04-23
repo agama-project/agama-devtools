@@ -1,10 +1,15 @@
 #! /bin/bash
 
+# This script creates a directory structure for downloading the Agama images.
+# Each created directory contains two scripts, one for downloading the online
+# image and second one the offline image.
+
 set -eu
 
-# Default directory
+# Output directory
 OUT_DIR="${1:-./agama-images}"
 
+# Handle help option
 if [ "$OUT_DIR" == "-h" ] || [ "$OUT_DIR" == "--help" ]; then
   echo "Usage: $0 [target-directory]"
   echo
@@ -13,20 +18,27 @@ if [ "$OUT_DIR" == "-h" ] || [ "$OUT_DIR" == "--help" ]; then
   exit 0
 fi
 
+# The jq tool is required
 if ! command -v jq >/dev/null; then
   echo "Error: The required 'jq' tool is not installed."
   exit 1
 fi
 
 if command -v agama-download-image >/dev/null; then
+  # The download script is installed in /usr/bin
   DOWNLOAD_SCRIPT="agama-download-image"
 else
+  # Expect running from Git checkout
   DOWNLOAD_SCRIPT=$(realpath "$(dirname "$0")/agama-download-image")
+  if [ -z "$DOWNLOAD_SCRIPT" ]; then
+    echo "Error: 'agama-download-image' script not found."
+    exit 1
+  fi
 fi
 
 mkdir -p "$OUT_DIR"
 
-# Function to create the scripts
+# Function to create the download scripts
 create_scripts() {
   local DIR="$1"
   local ONLINE_IMG="$2"
@@ -60,7 +72,7 @@ EOF
 }
 
 # create the directory structure,
-# parameters: directory | online image | offline image
+# parameters: directory name | online image ID | offline image ID | online script name | offline script name
 create_scripts "leap-16.0" "leap-16.0-online" "leap-16.0-offline" "" ""
 create_scripts "leap-16.1-Beta" "leap-16.1-beta-online" "leap-16.1-beta-offline" "" ""
 create_scripts "systemsmanagement:Agama:Devel" "devel-tw" "devel-leap" "download-online-tw" "download-online-leap"
@@ -74,10 +86,10 @@ if curl --head --silent --fail --connect-timeout 5 --max-time 5 -L "https://down
   create_scripts "sles-16.1-Beta" "sles-16.1-beta-online" "sles-16.1-beta-offline" "" ""
   create_scripts "Devel:YaST:Agama:Head" "devel-sles" "" "" ""
   # Dynamically obtain the list of QU images
-	BASE_URL="https://download.suse.de/ibs/SUSE:/SLFO:/Products:/SLES:/16.0:"
-	for QU in $(curl -L -s "${BASE_URL}/?jsontable" | jq -r ".data[] | select(.name|test(\"^QU[0-9]+/\$\")) | .name" | tr -d "/"); do
-		create_scripts "sles-16.0-${QU}" "sles-16.0-${QU}-online" "sles-16.0-${QU}-offline" "" ""
-	done
+  BASE_URL="https://download.suse.de/ibs/SUSE:/SLFO:/Products:/SLES:/16.0:"
+  for QU in $(curl -L -s "${BASE_URL}/?jsontable" | jq -r ".data[] | select(.name|test(\"^QU[0-9]+/\$\")) | .name" | tr -d "/"); do
+    create_scripts "sles-16.0-${QU}" "sles-16.0-${QU}-online" "sles-16.0-${QU}-offline" "" ""
+  done
 else
   echo "Warning: https://download.suse.de is not accessible, skipping internal SLES images."
 fi

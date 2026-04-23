@@ -11,7 +11,7 @@ scripts are installed into the `/usr/bin` directory.
 
 This script downloads specific Agama ISO images. It automatically handles:
 
-- Listing the available images with details (location, age, size)
+- Listing the available images with details (location, date, size)
 - Finding the latest version for development and testing images
 - Verifying SHA256 or SHA512 checksums
 - Verifying GPG signatures
