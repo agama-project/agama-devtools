@@ -240,15 +240,27 @@ function print_development_images() {
       "${ARCH}-.*Build.*\\\\.iso\$"
     echo
     printf "  ID: "
-    green "devel-sles-test-offline"
-    echo "  Description: Latest development SLES 16.1 Beta offline image (SLFO)"
+    green "devel-sles-slfo-test-offline"
+    echo "  Description: Latest development SLES 16.1 Beta offline image (SLFO:Test)"
     print_image "https://download.suse.de/ibs/SUSE:/SLFO:/Products:/SLES:/16.1:/TEST/product/iso/" \
       "SLES-16\\\\.1-Full-${ARCH}-.*\\\\.install\\\\.iso\$"
     echo
     printf "  ID: "
-    green "devel-sles-test-online"
-    echo "  Description: Latest development SLES 16.1 Beta online image (SLFO)"
+    green "devel-sles-slfo-test-online"
+    echo "  Description: Latest development SLES 16.1 Beta online image (SLFO:Test)"
     print_image "https://download.suse.de/ibs/SUSE:/SLFO:/Products:/SLES:/16.1:/TEST/product/iso/" \
+      "SLES-16\\\\.1-Online-${ARCH}-.*\\\\.install\\\\.iso\$"
+    echo
+    printf "  ID: "
+    green "devel-sles-slfo-offline"
+    echo "  Description: Latest development SLES 16.1 Beta offline image (SLFO)"
+    print_image "https://download.suse.de/ibs/SUSE:/SLFO:/Products:/SLES:/16.1/product/iso/" \
+      "SLES-16\\\\.1-Full-${ARCH}-.*\\\\.install\\\\.iso\$"
+    echo
+    printf "  ID: "
+    green "devel-sles-slfo-online"
+    echo "  Description: Latest development SLES 16.1 Beta online image (SLFO)"
+    print_image "https://download.suse.de/ibs/SUSE:/SLFO:/Products:/SLES:/16.1/product/iso/" \
       "SLES-16\\\\.1-Online-${ARCH}-.*\\\\.install\\\\.iso\$"
     echo
   else
@@ -565,13 +577,23 @@ sles-16.0-QU*-offline | sles-16.0-QU*-online)
   URL="${BASE_URL}$(latest_version "$BASE_URL" "$PATTERN")"
   GPG_DOWNLOAD_URL="https://build.suse.de/projects/Devel:YaST:Agama:Head/signing_keys/download?kind=gpg"
   ;;
-"devel-sles-test-offline")
+"devel-sles-slfo-test-offline")
   BASE_URL="https://download.suse.de/ibs/SUSE:/SLFO:/Products:/SLES:/16.1:/TEST/product/iso/"
   PATTERN="SLES-16\\\\.1-Full-${ARCH}-.*\\\\.install\\\\.iso\$"
   URL="${BASE_URL}$(latest_version "$BASE_URL" "$PATTERN")"
   ;;
-"devel-sles-test-online")
+"devel-sles-slfo-test-online")
   BASE_URL="https://download.suse.de/ibs/SUSE:/SLFO:/Products:/SLES:/16.1:/TEST/product/iso/"
+  PATTERN="SLES-16\\\\.1-Online-${ARCH}-.*\\\\.install\\\\.iso\$"
+  URL="${BASE_URL}$(latest_version "$BASE_URL" "$PATTERN")"
+  ;;
+"devel-sles-slfo-offline")
+  BASE_URL="https://download.suse.de/ibs/SUSE:/SLFO:/Products:/SLES:/16.1/product/iso/"
+  PATTERN="SLES-16\\\\.1-Full-${ARCH}-.*\\\\.install\\\\.iso\$"
+  URL="${BASE_URL}$(latest_version "$BASE_URL" "$PATTERN")"
+  ;;
+"devel-sles-slfo-online")
+  BASE_URL="https://download.suse.de/ibs/SUSE:/SLFO:/Products:/SLES:/16.1/product/iso/"
   PATTERN="SLES-16\\\\.1-Online-${ARCH}-.*\\\\.install\\\\.iso\$"
   URL="${BASE_URL}$(latest_version "$BASE_URL" "$PATTERN")"
   ;;
