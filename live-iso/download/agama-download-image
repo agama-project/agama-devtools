@@ -305,7 +305,7 @@ function print_list() {
 
 # Print the ISO image summary
 function print_image() {
-  local BASE_URL="$1"
+  local BASE_URL="${1%/}/"
   local PATTERN="$2"
 
   local DATA
