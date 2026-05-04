@@ -5,6 +5,10 @@ else
 endif
 BINDIR ?= $(PREFIX)/bin
 
+check:
+	@echo "Running shellcheck..."
+	shellcheck agama-download-image agama-image-dirs
+
 install:
 	@echo "Installing to $(DESTDIR)$(BINDIR)..."
 	install -d $(DESTDIR)$(BINDIR)
@@ -16,4 +20,4 @@ uninstall:
 	rm -f $(DESTDIR)$(BINDIR)/agama-download-iso
 	rm -f $(DESTDIR)$(BINDIR)/agama-image-dirs
 
-.PHONY: install uninstall
+.PHONY: check install uninstall

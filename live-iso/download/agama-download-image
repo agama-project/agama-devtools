@@ -572,7 +572,7 @@ sles-16.0-QU*-offline | sles-16.0-QU*-online)
   ;;
 "leap-16.1-beta-online")
   BASE_URL="https://download.opensuse.org/distribution/leap/16.1/installer/iso/"
-  PATTERN="agama-installer\\\\.${ARCH}-Leap16\\\\.1-Build.*\\\\.iso\$"
+  PATTERN="agama-installer\\\\.${ARCH}.*-Leap_16\\\\.1-Build.*\\\\.iso\$"
   URL="${BASE_URL}$(latest_version "$BASE_URL" "$PATTERN")"
   ;;
 "sles-16.1-beta-offline")
