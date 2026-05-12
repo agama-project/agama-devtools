@@ -7,6 +7,7 @@ set -eu
 ARCH=$(uname -m)
 CURRENT_TIME=$(date +%s)
 GPG_DOWNLOAD_URL=""
+GPG_DOWNLOAD_COMMAND=""
 CHECKSUM_DOWNLOAD_URL=""
 TEMP_KEYRING=""
 
@@ -437,7 +438,14 @@ function verify_checksum_and_signature() {
         exit 1
       fi
     else
-      if [ -n "$GPG_DOWNLOAD_URL" ]; then
+      if [ -n "$GPG_DOWNLOAD_COMMAND" ]; then
+        echo "Downloading GPG key using command '${GPG_DOWNLOAD_COMMAND}'..."
+        TEMP_KEYRING=$(mktemp --tmpdir keyring.XXXXXXXX)
+        echo "Importing GPG key into a temporary keyring"
+        $GPG_DOWNLOAD_COMMAND | gpg --no-default-keyring --keyring "$TEMP_KEYRING" --import
+
+        verify_signature_with_keyring "$TEMP_KEYRING"
+      elif [ -n "$GPG_DOWNLOAD_URL" ]; then
         echo "Downloading GPG key from ${GPG_DOWNLOAD_URL}..."
         TEMP_KEYRING=$(mktemp --tmpdir keyring.XXXXXXXX)
         echo "Importing GPG key from $GPG_DOWNLOAD_URL into a temporary keyring"
@@ -603,7 +611,7 @@ sles-16.0-QU*-offline | sles-16.0-QU*-online)
   BASE_URL="https://download.suse.de/ibs/Devel:/YaST:/Agama:/Head/images_SLES-16.1/iso/"
   PATTERN="${ARCH}-.*Build.*\\\\.iso\$"
   URL="${BASE_URL}$(latest_version "$BASE_URL" "$PATTERN")"
-  GPG_DOWNLOAD_URL="https://build.suse.de/projects/Devel:YaST:Agama:Head/signing_keys/download?kind=gpg"
+  GPG_DOWNLOAD_COMMAND="osc -A https://api.suse.de signkey Devel:YaST:Agama:Head"
   ;;
 "devel-sles-slfo-test-offline")
   BASE_URL="https://download.suse.de/ibs/SUSE:/SLFO:/Products:/SLES:/16.1:/TEST/product/iso/"
