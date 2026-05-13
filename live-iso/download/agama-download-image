@@ -7,6 +7,7 @@ set -eu
 ARCH=$(uname -m)
 CURRENT_TIME=$(date +%s)
 GPG_DOWNLOAD_URL=""
+GPG_DOWNLOAD_COMMAND=""
 CHECKSUM_DOWNLOAD_URL=""
 TEMP_KEYRING=""
 
@@ -437,9 +438,16 @@ function verify_checksum_and_signature() {
         exit 1
       fi
     else
-      if [ -n "$GPG_DOWNLOAD_URL" ]; then
+      # use a temporary GPG keyring, do not touch the user's one
+      TEMP_KEYRING=$(mktemp --tmpdir agama-devtools-keyring.XXXXXXXX)
+      if [ -n "$GPG_DOWNLOAD_COMMAND" ]; then
+        echo "Downloading GPG key using command '${GPG_DOWNLOAD_COMMAND}'..."
+        echo "Importing GPG key into a temporary keyring"
+        $GPG_DOWNLOAD_COMMAND | gpg --no-default-keyring --keyring "$TEMP_KEYRING" --import
+
+        verify_signature_with_keyring "$TEMP_KEYRING"
+      elif [ -n "$GPG_DOWNLOAD_URL" ]; then
         echo "Downloading GPG key from ${GPG_DOWNLOAD_URL}..."
-        TEMP_KEYRING=$(mktemp --tmpdir keyring.XXXXXXXX)
         echo "Importing GPG key from $GPG_DOWNLOAD_URL into a temporary keyring"
         curl -s "$GPG_DOWNLOAD_URL" | gpg --no-default-keyring --keyring "$TEMP_KEYRING" --import
 
@@ -450,7 +458,6 @@ function verify_checksum_and_signature() {
         RPM_KEY=$(rpm -qa "gpg-pubkey" | grep "gpg-pubkey-${SHORT_KEY_ID}") || true
 
         if [ -n "$RPM_KEY" ]; then
-          TEMP_KEYRING=$(mktemp --tmpdir keyring.XXXXXXXX)
           echo "Importing GPG key $RPM_KEY from the RPM database into a temporary keyring"
           rpm -q --queryformat "%{DESCRIPTION}" "$RPM_KEY" | gpg --no-default-keyring --keyring "$TEMP_KEYRING" --import
           verify_signature_with_keyring "$TEMP_KEYRING"
@@ -458,12 +465,12 @@ function verify_checksum_and_signature() {
           # the openSUSE or SUSE keys can be imported also from the GPG servers
           if [ "$KEY_ID" = "35A2F86E29B700A4" ] || [ "$KEY_ID" = "B88B2FD43DBDC284" ] ||
             [ "$KEY_ID" = "F74F09BC3FA1D6CE" ] || [ "$KEY_ID" = "A1BFC02BD588DC46" ]; then
-            TEMP_KEYRING=$(mktemp --tmpdir keyring.XXXXXXXX)
             echo "Importing GPG key $KEY_ID from GPG servers into a temporary keyring"
             gpg --no-default-keyring --keyring "$TEMP_KEYRING" --recv-keys "$KEY_ID"
 
             verify_signature_with_keyring "$TEMP_KEYRING"
           else
+            yellow "GPG signature check skipped"
             echo "The GPG key is not known, you have to manually import the respective public key"
           fi
         fi
@@ -603,7 +610,7 @@ sles-16.0-QU*-offline | sles-16.0-QU*-online)
   BASE_URL="https://download.suse.de/ibs/Devel:/YaST:/Agama:/Head/images_SLES-16.1/iso/"
   PATTERN="${ARCH}-.*Build.*\\\\.iso\$"
   URL="${BASE_URL}$(latest_version "$BASE_URL" "$PATTERN")"
-  GPG_DOWNLOAD_URL="https://build.suse.de/projects/Devel:YaST:Agama:Head/signing_keys/download?kind=gpg"
+  GPG_DOWNLOAD_COMMAND="osc -A https://api.suse.de signkey Devel:YaST:Agama:Head"
   ;;
 "devel-sles-slfo-test-offline")
   BASE_URL="https://download.suse.de/ibs/SUSE:/SLFO:/Products:/SLES:/16.1:/TEST/product/iso/"
