@@ -23,13 +23,15 @@ the [Agama installer](https://github.com/agama-project/agama).
 - [live-iso/download](./live-iso/download/) - scripts for downloading and
   managing the Agama ISO images.
 
-## Network scripts
+## Network scripts and documentation
 
 - [HTTP server](./network/http-server/README.md) - a document describing how to
   run a local static HTTP server
 - [HTTPS server](./network/https-server/) - scripts for creating a self-signed
   certificate and running a local static HTTPS server with the generated
   certificate
+- [FTP server](./network/ftp-server/README.md) - documentation describing how to
+  configure an FTP server
 - [HTTP proxy](./network/proxy/README.md) - document describing how to setup an
   HTTP proxy (both plain HTTP proxy and authenticated HTTP proxy)
 - [repository mirror](./network/repo-meta-mirror/) - a simple script for
