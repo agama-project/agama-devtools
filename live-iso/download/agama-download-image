@@ -96,7 +96,7 @@ function relative_time() {
 # Find all SLE 16.0 quarterly updates
 function quarterly_updates() {
   local BASE_URL="https://download.suse.de/ibs/SUSE:/SLFO:/Products:/SLES:/16.0:"
-  readarray -t UPDATES < <(curl -L -s "${BASE_URL}/?jsontable" | jq -r ".data[] | select(.name|test(\"^QU[0-9]+/\$\")) | .name" | tr -d "/")
+  readarray -t UPDATES < <(curl -L -s "${BASE_URL}/?jsontable" | jq -r ".data[] | select(.name|test(\"^QU[0-9.]+/\$\")) | .name" | tr -d "/")
 }
 
 # print summary of the released images
@@ -560,8 +560,8 @@ sles-16.0-QU*-offline | sles-16.0-QU*-online)
     URL="${BASE_URL}$(latest_version "$BASE_URL" "$PATTERN")"
   else
     # get QU number from $IMAGE
-    QU=$(echo "$IMAGE" | sed -E 's/sles-16.0-(QU[0-9]+)-(offline|online)/\1/')
-    TYPE=$(echo "$IMAGE" | sed -E 's/sles-16.0-(QU[0-9]+)-(offline|online)/\2/')
+    QU=$(echo "$IMAGE" | sed -E 's/sles-16.0-(QU[0-9.]+)-(offline|online)/\1/')
+    TYPE=$(echo "$IMAGE" | sed -E 's/sles-16.0-(QU[0-9.]+)-(offline|online)/\2/')
     BASE_URL="https://download.suse.de/ibs/SUSE:/SLFO:/Products:/SLES:/16.0:/${QU}/product/iso/"
 
     if [[ "$TYPE" == "offline" ]]; then
