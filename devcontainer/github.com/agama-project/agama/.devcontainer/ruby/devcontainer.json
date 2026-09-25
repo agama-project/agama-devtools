@@ -1,0 +1,106 @@
+// see https://containers.dev/implementors/json_reference/ for details
+{
+  "name": "Agama Ruby",
+  "build": {
+    "context": "../../../../..",
+    "dockerfile": "Dockerfile"
+  },
+  "postCreateCommand": "container-init.sh",
+  "remoteUser": "vscode",
+  "remoteEnv": {
+    // Gemini Code Assist's agent process restricts itself to a subtree of $HOME
+    // by default. Since the workspace lives under /workspaces it fails to start
+    // with "Workspace path is outside the allowed root directory". Explicitly
+    // allow using a different root.
+    "CODER_AGENT_ALLOWED_ROOT": "/workspaces",
+    // Use vscode itself as the $EDITOR
+    "EDITOR": "code --wait",
+    // When the VSCode is closed the terminal history is not autosaved, force
+    // saving the history after every command.
+    "PROMPT_COMMAND": "history -a"
+  },
+  "runArgs": [
+    // keep the current user and group ID
+    "--userns=keep-id",
+    // disable SELinux isolation
+    "--security-opt",
+    "label=disable"
+  ],
+  "mounts": [
+    // persist the user home directory (npm cache, shell history,...)
+    // https://code.visualstudio.com/docs/devcontainers/tips-and-tricks#_persisting-user-profile
+    // you can append "${devcontainerId}" to source volume name if you want to have
+    // a different volume for each running instance
+    "source=agama-ruby,target=/home/vscode,type=volume",
+    // anonymous volume that gets destroyed on rebuild,
+    // this allows VS Code to reinstall extensions and dotfiles
+    "target=/home/vscode/.vscode-server,type=volume",
+    // persistent extension cache to reinstall the extensions faster, you might share it with multiple containers
+    "source=extension-cache,target=/home/vscode/.vscode-server/extensionsCache/,type=volume",
+    // access the host Avahi daemon for mDNS hostname resolution (nss-mdns),
+    // mount the whole directory so the socket still works after restarting
+    // the Avahi daemon on the host, remove this if Avahi is not running on the host
+    "source=/run/avahi-daemon,target=/run/avahi-daemon,type=bind"
+  ],
+  "customizations": {
+    "vscode": {
+      "settings": {
+        "terminal.integrated.defaultProfile.linux": "bash"
+      },
+      "extensions": [
+        // ------------------
+        // GENERIC EXTENSIONS
+        // ------------------
+        // hightlight bug IDs, bug preview on hover
+        "lslezak.bug-id",
+        // syntax highlighting for the *.changes files
+        "lslezak.rpm-changes",
+        // spellchecker
+        "streetsidesoftware.code-spell-checker",
+        // load indentation style from .editorconfig files
+        "EditorConfig.EditorConfig",
+        // GitHub Actions integration
+        "github.vscode-github-actions",
+        // gettext *.po support
+        "mrorz.language-gettext",
+        // prettier autoformatter
+        "esbenp.prettier-vscode",
+        // shell programming
+        "mads-hartmann.bash-ide-vscode",
+        // Makefile support
+        "ms-vscode.makefile-tools",
+        // collect TODO, FIXME...
+        "Gruntfuggly.todo-tree",
+        // RPM *.spec support
+        "RVSmartPorting.rpm-spec-ext",
+        // YAML support
+        "redhat.vscode-yaml",
+        // ------------------
+        // MARKDOWN SUPPORT
+        // ------------------
+        // show preview using the GitHub style
+        "bierner.markdown-preview-github-styles",
+        // render GitHub emoji (:smiley:)
+        "bierner.markdown-emoji",
+        // Markdown editing (automatic TOC, table reformatting,...)
+        "yzhang.markdown-all-in-one",
+        // ------------------
+        // RUBY SERVICE EXTENSIONS
+        // ------------------
+        // Ruby support
+        "Shopify.ruby-lsp",
+        // autocomplete Ruby block ending 
+        "kaiwood.endwise",
+        // Generate Yardoc comments
+        "pavlitsky.yard"
+        // ------------------
+        // AI CODE ASSIST
+        // ------------------
+        // Google Gemini Code
+        //// "google.geminicodeassist",
+        // Anthropic Claude Code
+        //// "Anthropic.claude-code",
+      ]
+    }
+  }
+}

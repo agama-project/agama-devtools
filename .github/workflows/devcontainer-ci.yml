@@ -1,0 +1,116 @@
+name: Devcontainer CI
+
+on:
+  # run only when a checked file is modified, the documentation does not matter
+  push:
+    paths:
+      - devcontainer/**
+      - "!**.md"
+      - .github/workflows/devcontainer-ci.yml
+  pull_request:
+    paths:
+      - devcontainer/**
+      - "!**.md"
+      - .github/workflows/devcontainer-ci.yml
+  # allow running the workflow manually from the Actions tab
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  scripts:
+    runs-on: ubuntu-latest
+
+    container:
+      image: registry.opensuse.org/opensuse/leap:16.0
+
+    steps:
+      # git and tar are needed by the checkout action
+      - name: Install dependencies
+        run: zypper --non-interactive install --no-recommends git tar gzip make ShellCheck shfmt
+
+      - name: Git checkout
+        uses: actions/checkout@v7
+
+      - name: Run shellcheck
+        run: make -C devcontainer check
+
+      - name: Check formatting
+        run: make -C devcontainer format
+
+  dockerfiles:
+    runs-on: ubuntu-latest
+
+    container:
+      image: registry.opensuse.org/opensuse/leap:16.0
+
+    steps:
+      - name: Install dependencies
+        run: zypper --non-interactive install --no-recommends git tar gzip make findutils hadolint
+
+      - name: Git checkout
+        uses: actions/checkout@v7
+
+      - name: Run hadolint
+        run: make -C devcontainer lint-dockerfiles
+
+  devcontainer-json:
+    runs-on: ubuntu-latest
+
+    container:
+      image: registry.opensuse.org/opensuse/leap:16.0
+
+    steps:
+      - name: Install dependencies
+        run: zypper --non-interactive install --no-recommends git tar gzip make findutils python3-pipx
+
+      - name: Git checkout
+        uses: actions/checkout@v7
+
+      # check-jsonschema is not packaged, json5 is needed for parsing JSONC files
+      - name: Install check-jsonschema
+        run: |
+          pipx install check-jsonschema
+          pipx inject check-jsonschema json5
+        env:
+          PIPX_HOME: /opt/pipx
+          PIPX_BIN_DIR: /usr/local/bin
+
+      - name: Validate devcontainer.json files
+        run: make -C devcontainer check-devcontainer
+
+  # building the images verifies that all packages exist and the commands work
+  build:
+    runs-on: ubuntu-latest
+
+    strategy:
+      fail-fast: false
+      matrix:
+        include:
+          - name: agama-devtools
+            dir: agama-project/agama-devtools/.devcontainer
+          - name: agama/all-in-one
+            dir: agama-project/agama/.devcontainer/all-in-one
+          - name: agama/base
+            dir: agama-project/agama/.devcontainer/base
+          - name: agama/kiwi
+            dir: agama-project/agama/.devcontainer/kiwi
+          - name: agama/ruby
+            dir: agama-project/agama/.devcontainer/ruby
+          - name: agama/rust
+            dir: agama-project/agama/.devcontainer/rust
+          - name: agama/web
+            dir: agama-project/agama/.devcontainer/web
+
+    name: build (${{ matrix.name }})
+
+    steps:
+      - name: Git checkout
+        uses: actions/checkout@v7
+
+      - name: Build the image
+        run: |
+          cp container-init.sh "github.com/${{ matrix.dir }}/"
+          docker build "github.com/${{ matrix.dir }}/"
+        working-directory: ./devcontainer
