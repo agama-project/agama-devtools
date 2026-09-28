@@ -28,7 +28,7 @@ jobs:
     steps:
       # git and tar are needed by the checkout action
       - name: Install dependencies
-        run: zypper --non-interactive install --no-recommends git tar gzip make ShellCheck shfmt
+        run: zypper --non-interactive install --no-recommends --allow-downgrade git tar gzip make ShellCheck shfmt
 
       - name: Git checkout
         uses: actions/checkout@v7
@@ -47,7 +47,7 @@ jobs:
 
     steps:
       - name: Install dependencies
-        run: zypper --non-interactive install --no-recommends git tar gzip make findutils hadolint
+        run: zypper --non-interactive install --no-recommends --allow-downgrade git tar gzip make findutils hadolint
 
       - name: Git checkout
         uses: actions/checkout@v7
@@ -63,7 +63,7 @@ jobs:
 
     steps:
       - name: Install dependencies
-        run: zypper --non-interactive install --no-recommends git tar gzip make findutils python3-pipx
+        run: zypper --non-interactive install --no-recommends --allow-downgrade git tar gzip make findutils python3-pipx
 
       - name: Git checkout
         uses: actions/checkout@v7

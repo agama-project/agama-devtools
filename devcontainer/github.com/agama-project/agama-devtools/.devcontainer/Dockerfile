@@ -38,7 +38,7 @@ ARG EXTRA_PACKAGES="\
     python3-pipx"
 
 # Install tools required by VS Code Remote Development and some base development tools
-RUN zypper --non-interactive install --no-recommends \
+RUN zypper --non-interactive install --no-recommends --allow-downgrade \
     $BASE_PACKAGES $EXTRA_PACKAGES  \
     && zypper clean -a
 

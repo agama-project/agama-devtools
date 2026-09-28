@@ -42,7 +42,7 @@ ARG NODE_PACKAGES="\
     npm"
 
 # Install tools required by VS Code Remote Development and some base development tools
-RUN zypper --non-interactive install --no-recommends \
+RUN zypper --non-interactive install --no-recommends --allow-downgrade \
     $BASE_PACKAGES $EXTRA_PACKAGES $NODE_PACKAGES \
     && zypper clean -a
 
