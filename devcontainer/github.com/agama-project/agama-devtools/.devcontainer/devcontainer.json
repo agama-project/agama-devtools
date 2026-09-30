@@ -1,11 +1,10 @@
 {
   "name": "Agama Devtools",
   "build": {
-    "context": "../../../..",
     "dockerfile": "Dockerfile"
   },
-  // trust the /workspaces directory
-  "postCreateCommand": "container-init.sh",
+  // If you do not configure $HOME directory using a dotfiles repository you can simply uncomment this
+  // "postCreateCommand": "git config --global --add safe.directory /workspaces",
   "remoteUser": "vscode",
   "remoteEnv": {
     // Gemini Code Assist's agent process restricts itself to a subtree of $HOME

@@ -42,7 +42,6 @@ customize the container.
    cd /path/to/agama
    mkdir -p .devcontainer
    cp -r /path/to/agama-devtools/devcontainer/github.com/agama-project/agama/.devcontainer/rust .devcontainer/
-   cp /path/to/agama-devtools/devcontainer/container-init.sh .devcontainer/
    # remove .build.context value, the script is in the same directory as the Dockerfile now
    jq 'del(.build.context)' .devcontainer/devcontainer.json > .devcontainer/devcontainer.json.tmp
    mv .devcontainer/devcontainer.json.tmp .devcontainer/devcontainer.json
@@ -186,8 +185,6 @@ To make your changes persistent update the generated files:
 
 - You can install additional packages or change the system by modifying the
   `Dockerfile`.
-- The `container-init.sh` script is run once after the container is created,
-  you can add your own initialization steps there.
 - The `devcontainer.json` contains the list of the VSCode extensions which are
   installed in the container. Again, you can change the list according to your
   needs.

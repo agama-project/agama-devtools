@@ -59,8 +59,5 @@ RUN useradd -s /bin/bash --uid 1000 --gid users -m $USERNAME \
     && echo "$USERNAME ALL=(root) NOPASSWD:ALL" > /etc/sudoers.d/$USERNAME \
     && chmod 0440 /etc/sudoers.d/$USERNAME
 
-# Install the initialization script
-COPY container-init.sh /usr/local/bin/
-
 # Set the default user
 USER $USERNAME

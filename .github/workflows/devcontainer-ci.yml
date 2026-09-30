@@ -111,6 +111,5 @@ jobs:
 
       - name: Build the image
         run: |
-          cp container-init.sh "github.com/${{ matrix.dir }}/"
           docker build "github.com/${{ matrix.dir }}/"
         working-directory: ./devcontainer
