@@ -77,14 +77,14 @@
         // render GitHub emoji (:smiley:)
         "bierner.markdown-emoji",
         // Markdown editing (automatic TOC, table reformatting,...)
-        "yzhang.markdown-all-in-one"
+        "yzhang.markdown-all-in-one",
         // ------------------
         // AI CODE ASSIST
         // ------------------
         // Google Gemini Code
-        //// "google.geminicodeassist",
+        "google.geminicodeassist",
         // Anthropic Claude Code
-        //// "Anthropic.claude-code",
+        "Anthropic.claude-code"
       ]
     }
   }

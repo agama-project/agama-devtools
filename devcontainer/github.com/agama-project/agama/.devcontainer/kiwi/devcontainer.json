@@ -121,14 +121,14 @@
         // Ruby language server (requires "solargraph" gem)
         "castwide.solargraph",
         // autocomplete Ruby block ending 
-        "kaiwood.endwise"
+        "kaiwood.endwise",
         // ------------------
         // AI CODE ASSIST
         // ------------------
         // Google Gemini Code
-        //// "google.geminicodeassist",
+        "google.geminicodeassist",
         // Anthropic Claude Code
-        //// "Anthropic.claude-code",
+        "Anthropic.claude-code"
       ]
     }
   }

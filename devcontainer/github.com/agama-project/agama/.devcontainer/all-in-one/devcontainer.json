@@ -125,14 +125,14 @@
         // autocomplete Ruby block ending 
         "kaiwood.endwise",
         // Generate Yardoc comments
-        "pavlitsky.yard"
+        "pavlitsky.yard",
         // ------------------
         // AI CODE ASSIST
         // ------------------
         // Google Gemini Code
-        //// "google.geminicodeassist",
+        "google.geminicodeassist",
         // Anthropic Claude Code
-        //// "Anthropic.claude-code",
+        "Anthropic.claude-code"
       ]
     }
   }

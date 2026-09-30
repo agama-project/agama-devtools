@@ -73,14 +73,14 @@
         // DEVELOPMENT SUPPORT
         // ------------------
         // shell programming
-        "mads-hartmann.bash-ide-vscode"
+        "mads-hartmann.bash-ide-vscode",
         // ------------------
         // AI CODE ASSIST
         // ------------------
         // Google Gemini Code
-        //// "google.geminicodeassist",
+        "google.geminicodeassist",
         // Anthropic Claude Code
-        //// "Anthropic.claude-code",
+        "Anthropic.claude-code"
       ]
     }
   }

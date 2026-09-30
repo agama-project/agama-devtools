@@ -94,14 +94,14 @@
         // *.jsonnet support
         "Grafana.vscode-jsonnet",
         // C++ support
-        "ms-vscode.cpptools-extension-pack"
+        "ms-vscode.cpptools-extension-pack",
         // ------------------
         // AI CODE ASSIST
         // ------------------
         // Google Gemini Code
-        //// "google.geminicodeassist",
+        "google.geminicodeassist",
         // Anthropic Claude Code
-        //// "Anthropic.claude-code",
+        "Anthropic.claude-code"
       ]
     }
   }
