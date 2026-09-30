@@ -41,6 +41,8 @@
     "vscode": {
       "settings": {
         "terminal.integrated.defaultProfile.linux": "bash",
+        // use Vertex AI for login
+        "claudeCode.disableLoginPrompt": true,
         "files.associations": {
           // devcontainer.json files are JSONC (JSON with comments)
           "devcontainer.json" : "jsonc"

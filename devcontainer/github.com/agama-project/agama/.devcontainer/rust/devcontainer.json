@@ -45,7 +45,9 @@
   "customizations": {
     "vscode": {
       "settings": {
-        "terminal.integrated.defaultProfile.linux": "bash"
+        "terminal.integrated.defaultProfile.linux": "bash",
+        // use Vertex AI for login
+        "claudeCode.disableLoginPrompt": true
       },
       "extensions": [
         // ------------------

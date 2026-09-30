@@ -46,6 +46,8 @@
     "vscode": {
       "settings": {
         "terminal.integrated.defaultProfile.linux": "bash",
+        // use Vertex AI for login
+        "claudeCode.disableLoginPrompt": true,
         "xml.fileAssociations": [
           {
             // validate the Kiwi files against the Kiwi RNG schema (also enables autocompletion)
