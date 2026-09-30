@@ -191,11 +191,37 @@ To make your changes persistent update the generated files:
 - The `devcontainer.json` contains the list of the VSCode extensions which are
   installed in the container. Again, you can change the list according to your
   needs.
-- If you want to install some config files to $HOME check the
-  [Dotfiles](https://dotfiles.github.io/) documentation.
+- If you want to install your personal config files to $HOME use a dotfiles
+  repository, see the [Dotfiles](#dotfiles) section below.
 
 If your changes might be useful for others consider changing the original
 files and creating a pull request with your changes.
+
+### Dotfiles
+
+Personal configuration (like shell aliases) does not belong to
+the shared container definition. The Dev Containers extension can install it
+from your own [dotfiles](https://dotfiles.github.io/) Git repository into every
+container automatically.
+
+1. Create a Git repository with your config files, e.g.
+   `https://github.com/<user>/dotfiles`. *Do not store any secrets there!!*
+
+2. Optionally add an install script to the repository root. The extension runs
+   the first found file from `install.sh`, `install`, `bootstrap.sh`,
+   `bootstrap`, `script/bootstrap`, `setup.sh`, `setup` or `script/setup`. If
+   there is no such script, it symlinks all files and directories starting with
+   a dot to the home directory.
+
+3. To automatically install these dotfiles into all dev containers change the
+   *Settings > Extensions > DevContainer > Dotfiles: Repository* VSCode option
+   to the GitHub slug name (`<user>/<repo>`) or use a full Git URL.
+
+4. Rebuild the container (**Dev Containers: Rebuild Container**). The repository
+   is cloned inside the container and the install command is run.
+
+See more details in the
+[documentation](https://code.visualstudio.com/docs/devcontainers/containers#_personalizing-with-dotfile-repositories).
 
 ### Validating the changes
 

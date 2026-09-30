@@ -42,6 +42,12 @@ RUN zypper --non-interactive install --no-recommends --allow-downgrade \
     $BASE_PACKAGES $EXTRA_PACKAGES  \
     && zypper clean -a
 
+# Comment the block below when NOT using the Claude extension with Vertex AI login
+RUN zypper ar -f https://packages.cloud.google.com/yum/repos/cloud-sdk-el10-x86_64 google-cloud-rhel10
+RUN zypper --non-interactive --gpg-auto-import-keys install --no-recommends \
+    google-cloud-cli \
+    && zypper clean -a
+
 # Install check-jsonschema for validating the devcontainer.json files (json5 is
 # needed for parsing JSONC files). Install it globally, the home directory is
 # overlaid by a persistent volume at runtime.
