@@ -124,6 +124,17 @@ function image_info() {
   GPG_DOWNLOAD_COMMAND=""
 
   case "$ID" in
+  sles-16.1-offline | sles-16.1-online)
+    DESCRIPTION="Official SLES 16.1 $TYPE image"
+    BASE_URL="https://download.suse.de/install/SLES-16.1-GM"
+    PATTERN=$(sles_pattern 16.1 "$TYPE" GM)
+    CHECKSUM_DOWNLOAD_URL="${BASE_URL}/SHA256SUMS"
+    ;;
+  leap-16.1-offline | leap-16.1-online)
+    DESCRIPTION="Official openSUSE Leap 16.1 $TYPE image"
+    BASE_URL="https://download.opensuse.org/distribution/leap/16.1/offline"
+    PATTERN="Leap-16\\.1-${TYPE}-installer-${ARCH}\\.install\\.iso\$"
+    ;;
   leap-16.0-offline | leap-16.0-online)
     DESCRIPTION="Official openSUSE Leap 16.0 $TYPE image"
     BASE_URL="https://download.opensuse.org/distribution/leap/16.0/offline"
@@ -147,22 +158,6 @@ function image_info() {
     BASE_URL="${SLFO_URL}:/16.0:/${QU}/product/iso/"
     PATTERN=$(sles_pattern 16.0 "$TYPE")
     ;;
-  leap-16.1-beta-offline)
-    DESCRIPTION="Testing openSUSE Leap 16.1 Beta offline image"
-    BASE_URL="https://download.opensuse.org/distribution/leap/16.1/offline/"
-    PATTERN="Leap-16\\.1-offline-installer-${ARCH}-Build.*\\.install\\.iso\$"
-    ;;
-  leap-16.1-beta-online)
-    DESCRIPTION="Testing openSUSE Leap 16.1 Beta online image"
-    BASE_URL="https://download.opensuse.org/distribution/leap/16.1/installer/iso/"
-    PATTERN="agama-installer\\.${ARCH}-.*-Leap_16\\.1-Build.*\\.iso\$"
-    ;;
-  sles-16.1-beta-offline | sles-16.1-beta-online)
-    DESCRIPTION="Testing SLES 16.1 Beta $TYPE image"
-    BASE_URL="https://download.suse.de/install/SLES-16.1-LATEST/"
-    PATTERN=$(sles_pattern 16.1 "$TYPE")
-    CHECKSUM_DOWNLOAD_URL="${BASE_URL}SHA256SUMS"
-    ;;
   devel-tw)
     DESCRIPTION="The latest openSUSE Tumbleweed image from systemsmanagement:Agama:Devel project"
     BASE_URL="https://download.opensuse.org/repositories/systemsmanagement:/Agama:/Devel/images/iso/"
@@ -180,16 +175,6 @@ function image_info() {
     BASE_URL="https://download.suse.de/ibs/Devel:/YaST:/Agama:/Head/images_SLES-16.1/iso/"
     PATTERN="${ARCH}-.*Build.*\\.iso\$"
     GPG_DOWNLOAD_COMMAND="osc -A https://api.suse.de signkey Devel:YaST:Agama:Head"
-    ;;
-  devel-sles-slfo-test-offline | devel-sles-slfo-test-online)
-    DESCRIPTION="Latest development SLES 16.1 Beta $TYPE image (SLFO:Test)"
-    BASE_URL="${SLFO_URL}:/16.1:/TEST/product/iso/"
-    PATTERN=$(sles_pattern 16.1 "$TYPE")
-    ;;
-  devel-sles-slfo-offline | devel-sles-slfo-online)
-    DESCRIPTION="Latest development SLES 16.1 Beta $TYPE image (SLFO)"
-    BASE_URL="${SLFO_URL}:/16.1/product/iso/"
-    PATTERN=$(sles_pattern 16.1 "$TYPE")
     ;;
   devel-branch-*)
     local BRANCH="${ID#devel-branch-}"
@@ -283,6 +268,10 @@ function print_titled_group() {
 function print_released_images() {
   heading "=" "Released images:"
   echo
+  print_titled_group "openSUSE Leap 16.1" leap-16.1-offline leap-16.1-online
+  echo
+  print_titled_group ibs "SLES 16.1" sles-16.1-offline sles-16.1-online
+  echo
   print_titled_group "openSUSE Leap 16.0" leap-16.0-offline leap-16.0-online
   echo
   print_titled_group ibs "SLES 16.0" sles-16.0-offline sles-16.0-online
@@ -303,10 +292,6 @@ function print_testing_images() {
   heading "=" "Testing images:"
   echo
   print_titled_group ibs "SLES 16.0 - Next QU" sles-16.0-QU-next-offline sles-16.0-QU-next-online
-  echo
-  print_titled_group "openSUSE Leap 16.1" leap-16.1-beta-offline leap-16.1-beta-online
-  echo
-  print_titled_group ibs "SLES 16.1" sles-16.1-beta-offline sles-16.1-beta-online
 }
 
 # print summary of the development images
@@ -315,8 +300,7 @@ function print_development_images() {
   echo
   print_titled_group "openSUSE" devel-tw devel-leap
   echo
-  print_titled_group ibs "SLES" devel-sles devel-sles-slfo-test-offline \
-    devel-sles-slfo-test-online devel-sles-slfo-offline devel-sles-slfo-online
+  print_titled_group ibs "SLES" devel-sles
 }
 
 # Print summary of the experimental images which are built from the Git branches in the OBS

@@ -74,16 +74,14 @@ EOF
 # create the directory structure,
 # parameters: directory name | online image ID | offline image ID | online script name | offline script name
 create_scripts "leap-16.0" "leap-16.0-online" "leap-16.0-offline" "" ""
-create_scripts "leap-16.1-Beta" "leap-16.1-beta-online" "leap-16.1-beta-offline" "" ""
+create_scripts "leap-16.1" "leap-16.1-online" "leap-16.1-offline" "" ""
 create_scripts "systemsmanagement:Agama:Devel" "devel-tw" "devel-leap" "download-online-tw" "download-online-leap"
 
 # check if download.suse.de is accessible
 if curl --head --silent --fail --connect-timeout 5 --max-time 5 -L "https://download.suse.de" >/dev/null; then
   create_scripts "sles-16.0-GM" "sles-16.0-online" "sles-16.0-offline" "" ""
   create_scripts "sles-16.0-QU-next" "sles-16.0-QU-next-online" "sles-16.0-QU-next-offline" "" ""
-  create_scripts "sles-16.1-SLFO-Test" "devel-sles-slfo-test-online" "devel-sles-slfo-test-offline" "" ""
-  create_scripts "sles-16.1-SLFO" "devel-sles-slfo-online" "devel-sles-slfo-offline" "" ""
-  create_scripts "sles-16.1-Beta" "sles-16.1-beta-online" "sles-16.1-beta-offline" "" ""
+  create_scripts "sles-16.1-GM" "sles-16.1-online" "sles-16.1-offline" "" ""
   create_scripts "Devel:YaST:Agama:Head" "devel-sles" "" "" ""
   # Dynamically obtain the list of QU images
   BASE_URL="https://download.suse.de/ibs/SUSE:/SLFO:/Products:/SLES:/16.0:"
