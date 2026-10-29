@@ -22,6 +22,8 @@ the [Agama installer](https://github.com/agama-project/agama).
   installer.
 - [live-iso/download](./live-iso/download/) - scripts for downloading and
   managing the Agama ISO images.
+- [live-iso/virtualization](./live-iso/virtualization/) - scripts for running
+  an aarch64 or s390x system in x86_64, multipath emulation
 
 ## Network scripts and documentation
 
