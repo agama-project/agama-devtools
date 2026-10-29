@@ -1,0 +1,5 @@
+initrd
+linux
+*.qcow2
+*.raw
+*.iso
